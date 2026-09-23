@@ -365,7 +365,7 @@ function App() {
 
             <TransitionCover active={isTransitioning} />
           </motion.section>
-        ) : (
+        ) : state === "story" ? (
           <motion.section
             key="story"
             className="story scene"
