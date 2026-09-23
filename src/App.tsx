@@ -1,13 +1,38 @@
 import { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
 
-type ExperienceState = "opening" | "memory"
+type ExperienceState = "opening" | "story"
 
 const dates = "23.09.25  /  23.09.26"
+
+const memories = [
+  {
+    number: "01",
+    label: "the first little thing",
+    title: "It started on Snapchat.",
+    body: "I added you. We talked about family. Then somehow, the streaks became a reason to keep coming back.",
+    note: "A conversation that didn't know where it was going yet.",
+  },
+  {
+    number: "02",
+    label: "then came the DM",
+    title: "You came looking for reels.",
+    body: "You replied to my story with that little complaint: “So you share reels with people and you don't share with me?”",
+    note: "And just like that, Instagram became part of the story.",
+  },
+  {
+    number: "03",
+    label: "somewhere in between",
+    title: "You kept the conversation going.",
+    body: "After that post about ladies who couldn't keep a conversation, you replied: “Nah, not you. You know how to keep conversation.”",
+    note: "Then the checking up became daily.",
+  },
+]
 
 function App() {
   const [state, setState] = useState<ExperienceState>("opening")
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [storyIndex, setStoryIndex] = useState(0)
   const [musicOpen, setMusicOpen] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -51,14 +76,21 @@ function App() {
     setIsTransitioning(true)
 
     void audioRef.current?.play().catch(() => {
-      // Browsers may block audio until the user enables it from the music control.
+      setMusicOpen(true)
     })
 
     window.setTimeout(() => {
-      setState("memory")
+      setState("story")
+      setStoryIndex(0)
       setIsTransitioning(false)
     }, 1050)
   }
+
+  const changeMemory = (direction: 1 | -1) => {
+    setStoryIndex((current) => Math.min(Math.max(current + direction, 0), memories.length - 1))
+  }
+
+  const memory = memories[storyIndex]
 
   return (
     <main className="experience">
@@ -109,9 +141,7 @@ function App() {
                   <YesButton label="YES, OF COURSE" onClick={enterStory} />
                 </div>
 
-                <p className="quiet-note">
-                  There was never really another answer.
-                </p>
+                <p className="quiet-note">There was never really another answer.</p>
               </div>
             </div>
 
@@ -124,58 +154,93 @@ function App() {
           </motion.section>
         ) : (
           <motion.section
-            key="memory"
-            className="memory scene"
+            key="story"
+            className="story scene"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <header className="topbar topbar-memory">
+            <header className="topbar">
               <span className="wordmark">sucree</span>
-              <span className="chapter-label">the story starts here</span>
+              <span className="chapter-label">how it started · {memory.number} / 03</span>
             </header>
 
-            <div className="memory-content">
-              <div className="chapter-copy">
-                <p className="eyebrow">Before the date. Before the cake. Before the yes.</p>
-                <h2>
-                  It started with
-                  <em> a conversation.</em>
-                </h2>
-                <p className="body-copy">
-                  Somewhere between Snapchat streaks, an Instagram DM and those
-                  everyday check-ins, you quietly became my person.
-                </p>
-                <button
-                  className="continue-button"
-                  type="button"
-                  onClick={() => setState("opening")}
-                >
-                  Back to the question
-                  <span aria-hidden="true">↗</span>
-                </button>
+            <div className="story-progress" aria-hidden="true">
+              {memories.map((item, index) => (
+                <span key={item.number} className={index === storyIndex ? "active" : ""} />
+              ))}
+            </div>
+
+            <div className="story-content">
+              <div className="story-copy">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={memory.number}
+                    initial={{ opacity: 0, y: 22 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -18 }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <p className="eyebrow">{memory.label}</p>
+                    <h2>{memory.title}</h2>
+                    <p className="body-copy">{memory.body}</p>
+                    <p className="story-note">{memory.note}</p>
+                  </motion.div>
+                </AnimatePresence>
               </div>
 
-              <motion.div
-                className="memory-card"
-                aria-label="First chapter placeholder"
-                initial={{ opacity: 0, y: 30, rotate: 5 }}
-                animate={{ opacity: 1, y: 0, rotate: 2 }}
-                transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <div className="memory-card-top">
-                  <span>chapter one</span>
-                  <span>01</span>
+              <div className="story-visual">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={memory.number}
+                    className="story-photo"
+                    initial={{ opacity: 0, scale: 0.92, rotate: storyIndex % 2 ? 2 : -2 }}
+                    animate={{ opacity: 1, scale: 1, rotate: storyIndex % 2 ? -1 : 1 }}
+                    exit={{ opacity: 0, scale: 1.04, rotate: 3 }}
+                    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <img src="/media/dummy-cat.svg" alt="" />
+                    <div className="story-photo-label">
+                      <span>temporary photo</span>
+                      <strong>{memory.number}</strong>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+
+                <div className="story-controls">
+                  <button type="button" onClick={() => changeMemory(-1)} disabled={storyIndex === 0}>
+                    ←
+                  </button>
+                  <span>swipe / tap</span>
+                  <button
+                    type="button"
+                    onClick={() => changeMemory(1)}
+                    disabled={storyIndex === memories.length - 1}
+                  >
+                    →
+                  </button>
                 </div>
-                <div className="memory-card-photo">
-                  <img src="/media/dummy-cat.svg" alt="Temporary development image" />
-                </div>
-                <div className="memory-card-caption">
-                  <strong>Somewhere along the way.</strong>
-                  <span>We started checking up on each other every day.</span>
-                </div>
-              </motion.div>
+              </div>
             </div>
+
+            <div
+              className="story-swipe-zone"
+              onTouchStart={(event) => {
+                const start = event.changedTouches[0]?.clientX ?? 0
+                event.currentTarget.dataset.startX = String(start)
+              }}
+              onTouchEnd={(event) => {
+                const start = Number(event.currentTarget.dataset.startX ?? 0)
+                const end = event.changedTouches[0]?.clientX ?? start
+                if (Math.abs(end - start) < 45) return
+                changeMemory(end < start ? 1 : -1)
+              }}
+              aria-label="Swipe between memories"
+            />
+
+            <button className="story-back" type="button" onClick={() => setState("opening")}>
+              restart
+            </button>
           </motion.section>
         )}
       </AnimatePresence>
@@ -187,9 +252,7 @@ function App() {
         aria-label={isPlaying ? "Pause music" : "Play music"}
         aria-pressed={isPlaying}
       >
-        <span className="music-dot" aria-hidden="true">
-          {isPlaying ? "Ⅱ" : "♪"}
-        </span>
+        <span className="music-dot" aria-hidden="true">{isPlaying ? "Ⅱ" : "♪"}</span>
         <span className="music-copy">
           <strong>Yellow</strong>
           <small>{isPlaying ? "playing for you" : "music is off"}</small>
