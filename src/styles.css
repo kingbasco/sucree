@@ -6,14 +6,14 @@
   background: var(--ink);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  --ink: #15130f;
-  --ink-soft: #1c1915;
-  --paper: #f1e9dd;
-  --paper-soft: #d9ccbc;
-  --plum: #e95d8a;
-  --plum-deep: #8f294e;
-  --mist: #afa69a;
-  --white: #fffdf8;
+  --ink: #ff5fa2;
+  --ink-soft: #ff79b3;
+  --paper: #fff7fb;
+  --paper-soft: #ffd6e8;
+  --plum: #ff2f82;
+  --plum-deep: #d81b68;
+  --mist: #ffe0ee;
+  --white: #ffffff;
   --line: rgba(255, 253, 248, 0.16);
 }
 
@@ -49,8 +49,8 @@ button:focus-visible {
   min-height: 100dvh;
   overflow: hidden;
   background:
-    radial-gradient(circle at 76% 22%, rgba(233, 93, 138, 0.2), transparent 28rem),
-    radial-gradient(circle at 16% 78%, rgba(217, 204, 188, 0.07), transparent 24rem),
+    radial-gradient(circle at 76% 22%, rgba(255, 255, 255, 0.18), transparent 28rem),
+    radial-gradient(circle at 16% 78%, rgba(255, 255, 255, 0.10), transparent 24rem),
     var(--ink);
 }
 
@@ -192,8 +192,8 @@ h2 em {
   padding: 22px;
   overflow: hidden;
   background:
-    linear-gradient(140deg, rgba(241, 233, 221, 0.07), rgba(233, 93, 138, 0.24)),
-    #2a211f;
+    linear-gradient(140deg, rgba(241, 233, 221, 0.07), rgba(255, 47, 130, 0.34)),
+    #ff3f8d;
 }
 
 .memory-window-inner::before {
@@ -259,7 +259,7 @@ h2 em {
   right: 7%;
   width: 20rem;
   height: 20rem;
-  background: rgba(233, 93, 138, 0.12);
+  background: rgba(255, 47, 130, 0.28);
 }
 
 .ambient-two {
@@ -267,7 +267,7 @@ h2 em {
   left: 6%;
   width: 16rem;
   height: 16rem;
-  background: rgba(217, 204, 188, 0.06);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .grain {
@@ -363,7 +363,7 @@ h2 em {
   border: 1px solid rgba(241, 233, 221, 0.08);
   background:
     radial-gradient(circle at 30% 30%, rgba(217, 204, 188, 0.22), transparent 28%),
-    linear-gradient(145deg, #2c2521, #7b344e 70%, #1e1917);
+    linear-gradient(145deg, #ff8fbd, #ff3f8d 70%, #e91f70);
   color: rgba(241, 233, 221, 0.45);
   font-family: "DM Mono", monospace;
   font-size: 0.58rem;
@@ -597,7 +597,7 @@ h2 em {
   position: absolute;
   inset: 0;
   content: "";
-  background: linear-gradient(180deg, transparent 55%, rgba(21, 19, 15, 0.6));
+  background: linear-gradient(180deg, transparent 55%, rgba(190, 18, 91, 0.42));
   pointer-events: none;
 }
 
@@ -693,7 +693,7 @@ h2 em {
   border: 1px solid rgba(241, 233, 221, 0.18);
   border-radius: 999px;
   color: var(--paper);
-  background: rgba(21, 19, 15, 0.74);
+  background: rgba(201, 22, 104, 0.72);
   backdrop-filter: blur(14px);
   cursor: pointer;
 }
