@@ -26,6 +26,23 @@ const memories = [
     title: "You kept the conversation going.",
     body: "After that post about ladies who couldn't keep a conversation, you replied: “Nah, not you. You know how to keep conversation.”",
     note: "Then the checking up became daily.",
+    image: "/media/dummy-cat.svg",
+  },
+  {
+    number: "04",
+    label: "the little crisis",
+    title: "Then WhatsApp decided to stress us.",
+    body: "You got logged out and couldn't recover the line. We had to figure it out together, and eventually you got another line.",
+    note: "Even the annoying things became things we solved together.",
+    image: "/media/dummy-chat.svg",
+  },
+  {
+    number: "05",
+    label: "those long nights",
+    title: "Law School gave us late-night calls.",
+    body: "You were reading. I was there. We talked, danced, laughed, and sometimes you cried. Some nights were long, but I loved being the person you could call.",
+    note: "Some of my favourite memories were simply being there with you.",
+    image: "/media/dummy-night.svg",
   },
 ]
 
@@ -162,7 +179,7 @@ function App() {
           >
             <header className="topbar">
               <span className="wordmark">sucree</span>
-              <span className="chapter-label">how it started · {memory.number} / 03</span>
+              <span className="chapter-label">how it started · {memory.number} / {memories.length}</span>
             </header>
 
             <div className="story-progress" aria-hidden="true">
@@ -199,7 +216,7 @@ function App() {
                     exit={{ opacity: 0, scale: 1.04, rotate: 3 }}
                     transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <img src="/media/dummy-cat.svg" alt="" />
+                    <img src={memory.image} alt="" />
                     <div className="story-photo-label">
                       <span>temporary photo</span>
                       <strong>{memory.number}</strong>
