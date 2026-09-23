@@ -70,6 +70,38 @@ const memories = [
     note: "The first yes. The yes that brought us here.",
     image: "/media/dummy-yes.svg",
   },
+  {
+    number: "09",
+    label: "then came the distance",
+    title: "You went back to Law School.",
+    body: "After that first yes, you went back to Law School. We had to keep choosing each other across the distance, between reading, calls, visits, and all the little moments that kept us close.",
+    note: "The first yes was not the end of the story. It was where the real choosing began.",
+    image: "/media/dummy-distance.svg",
+  },
+  {
+    number: "10",
+    label: "the picnic plan",
+    title: "Then we decided we were doing a picnic.",
+    body: "When you came back, we started planning it. The planning got stressful. You wanted to stop. I told you, “Baby, we are doing this.”",
+    note: "And somehow, we kept going until the day was finally ours.",
+    image: "/media/dummy-picnic.svg",
+  },
+  {
+    number: "11",
+    label: "the day we made it",
+    title: "And the picnic turned out beautiful.",
+    body: "The small chops and cake almost gave us a different story, but we made it through. We took pictures, made videos, laughed, and had a beautiful day together.",
+    note: "One of those days I wish I could press rewind on.",
+    image: "/media/dummy-picnic.svg",
+  },
+  {
+    number: "12",
+    label: "your first gift",
+    title: "Then you gave me my first gift.",
+    body: "You gave me a slide and told me to go play and take it over the park. It was such a small thing, but I remember how it felt to receive something from you.",
+    note: "I still remember the little things you did before you knew how much they would mean to me.",
+    image: "/media/dummy-gift.svg",
+  },
 ]
 
 function App() {
