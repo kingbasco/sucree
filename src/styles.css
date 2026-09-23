@@ -482,7 +482,8 @@ h2 em {
   padding: 0;
 }
 
-.memory-window img {
+.memory-window img,
+.story-photo img {
   display: block;
   width: 100%;
   height: 100%;
@@ -498,7 +499,8 @@ h2 em {
   z-index: 1;
 }
 
-.memory-window-overlay span {
+.memory-window-overlay span,
+.story-photo-label span {
   color: var(--mist);
   font-family: "DM Mono", monospace;
   font-size: 0.62rem;
@@ -515,18 +517,167 @@ h2 em {
   line-height: 0.9;
 }
 
-.memory-card-photo {
-  overflow: hidden;
-  padding: 0;
+.story {
+  min-height: 100dvh;
 }
 
-.memory-card-photo img {
-  display: block;
+.story-progress {
+  position: absolute;
+  top: 50%;
+  left: clamp(20px, 4vw, 64px);
+  z-index: 5;
+  display: grid;
+  gap: 9px;
+  transform: translateY(-50%);
+}
+
+.story-progress span {
+  width: 3px;
+  height: 34px;
+  border-radius: 999px;
+  background: rgba(241, 233, 221, 0.18);
+  transition: height 300ms ease, background 300ms ease;
+}
+
+.story-progress span.active {
+  height: 64px;
+  background: var(--paper);
+}
+
+.story-content {
+  display: grid;
+  min-height: calc(100dvh - 56px);
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.8fr);
+  align-items: center;
+  gap: clamp(48px, 10vw, 150px);
+  width: min(1080px, 100%);
+  margin: 0 auto;
+  padding: 90px 0 70px;
+}
+
+.story-copy {
+  max-width: 540px;
+  padding-left: 42px;
+}
+
+.story-copy h2 {
+  max-width: 9ch;
+  margin: 0;
+  font-size: clamp(3.5rem, 7vw, 7rem);
+}
+
+.story-note {
+  max-width: 38ch;
+  margin: 28px 0 0;
+  padding-left: 16px;
+  border-left: 1px solid rgba(241, 233, 221, 0.22);
+  color: var(--mist);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.story-visual {
+  width: min(430px, 100%);
+  margin-left: auto;
+}
+
+.story-photo {
+  position: relative;
   width: 100%;
-  height: 100%;
-  min-height: 390px;
-  object-fit: cover;
-  filter: saturate(0.72) contrast(0.94);
+  aspect-ratio: 0.82;
+  overflow: hidden;
+  border: 1px solid rgba(241, 233, 221, 0.18);
+  background: var(--ink-soft);
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.3);
+}
+
+.story-photo::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(180deg, transparent 55%, rgba(21, 19, 15, 0.6));
+  pointer-events: none;
+}
+
+.story-photo-label {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  left: 18px;
+  z-index: 2;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+}
+
+.story-photo-label strong {
+  color: var(--paper);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 2.6rem;
+  font-weight: 500;
+}
+
+.story-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+
+.story-controls button {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 1px solid rgba(241, 233, 221, 0.2);
+  border-radius: 50%;
+  color: var(--paper);
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.story-controls button:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.story-controls span {
+  color: var(--mist);
+  font-family: "DM Mono", monospace;
+  font-size: 0.52rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.story-swipe-zone {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.story-content,
+.story-controls,
+.story-back {
+  position: relative;
+  z-index: 2;
+}
+
+.story-back {
+  position: absolute;
+  bottom: 30px;
+  left: clamp(20px, 4vw, 64px);
+  border: 0;
+  color: var(--mist);
+  background: transparent;
+  cursor: pointer;
+  font-family: "DM Mono", monospace;
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .music-control {
@@ -590,7 +741,60 @@ h2 em {
     bottom: 18px;
   }
 
-  .memory-card-photo img {
-    min-height: 320px;
+  .story-progress {
+    top: 92px;
+    right: 20px;
+    left: 20px;
+    display: flex;
+    gap: 6px;
+    transform: none;
+  }
+
+  .story-progress span {
+    width: auto;
+    height: 2px;
+    flex: 1;
+  }
+
+  .story-progress span.active {
+    width: auto;
+    height: 3px;
+  }
+
+  .story-content {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    padding: 130px 0 80px;
+  }
+
+  .story-copy {
+    padding-left: 0;
+  }
+
+  .story-copy h2 {
+    max-width: 8ch;
+  }
+
+  .story-visual {
+    width: min(100%, 350px);
+    margin: 0 auto;
+  }
+
+  .story-photo {
+    aspect-ratio: 0.88;
+  }
+
+  .story-swipe-zone {
+    inset: 110px 0 0;
+  }
+
+  .story-back {
+    bottom: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-progress span {
+    transition: none;
   }
 }
