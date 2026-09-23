@@ -190,6 +190,46 @@ const memories = [
     note: "I love the version of you that comes out when we're just having fun.",
     image: "/media/dummy-arcade.svg",
   },
+  {
+    number: "24",
+    label: "one year later",
+    title: "And somehow, here we are.",
+    body: "A year ago, it was just you and me sitting across from each other, not knowing everything that was coming. Now I look back and see a whole year of conversations, visits, laughter, fights, apologies, distance, family, growth, and love.",
+    note: "We didn't just make memories. We made a story.",
+    image: "/media/dummy-reflection.svg",
+  },
+  {
+    number: "25",
+    label: "what this year taught me",
+    title: "I learned that loving you is in the little things.",
+    body: "It is checking up on you. Staying on the phone when the night gets long. Showing up when things are hard. Laughing over things that make no sense. Choosing to talk when we misunderstand each other. And choosing you again, every single time.",
+    note: "I would still choose you. And I would choose you again.",
+    image: "/media/dummy-love.svg",
+  },
+  {
+    number: "26",
+    label: "my anniversary letter",
+    title: "Baby, thank you for choosing life with me.",
+    body: "I never want you to think I take what we have for granted. I see you. I appreciate you. I appreciate every conversation, every visit, every laugh, every difficult moment we worked through, and every time you let me into your world.",
+    note: "Keep pushing, baby. I am here. And I am not going anywhere.",
+    image: "/media/dummy-letter.svg",
+  },
+  {
+    number: "27",
+    label: "the future",
+    title: "I can't wait to ask you to marry me.",
+    body: "I don't know every detail of what the future will look like, but I know what I want. I want more ordinary mornings, more dates, more laughter, more hard seasons we survive together, one home, a family, and a life that keeps choosing us.",
+    note: "One day, I want to look at you and know we made it all the way.",
+    image: "/media/dummy-future.svg",
+  },
+  {
+    number: "28",
+    label: "forever",
+    title: "We started this thing. We are going to see it to the end.",
+    body: "You are mine, and you are mine forever. I want to keep loving you, keep growing with you, and keep building this thing with you. And the end is not a goodbye. The end is till death do us part.",
+    note: "Happy one-year anniversary, baby. Here is to us.",
+    image: "/media/dummy-forever.svg",
+  },
 ]
 
 function App() {
