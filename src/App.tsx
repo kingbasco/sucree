@@ -477,6 +477,19 @@ function App() {
                 We started this thing together, baby, and I want to see it all the way through.
               </p>
               <p className="ending-signoff">Till death do us part.</p>
+
+              <details className="secret-note">
+                <summary>one last little thing</summary>
+                <div className="secret-note-card">
+                  <span>23.09.25 → ∞</span>
+                  <p>
+                    If I had to start this whole story again, I would still find my way back to you.
+                    Same girl. Same yes. Same me, choosing you.
+                  </p>
+                  <strong>Arigato, baby.</strong>
+                </div>
+              </details>
+
               <button type="button" className="ending-button" onClick={() => setState("opening")}>
                 <span>read it again</span>
                 <span aria-hidden="true">↗</span>
