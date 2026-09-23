@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
 
 type ExperienceState = "opening" | "memory"
@@ -8,10 +8,51 @@ const dates = "23.09.25  /  23.09.26"
 function App() {
   const [state, setState] = useState<ExperienceState>("opening")
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [musicOpen, setMusicOpen] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    const audio = new Audio("/media/yellow.mp3")
+    audio.loop = true
+    audio.volume = 0.28
+    audioRef.current = audio
+
+    const sync = () => setIsPlaying(!audio.paused)
+    audio.addEventListener("play", sync)
+    audio.addEventListener("pause", sync)
+
+    return () => {
+      audio.pause()
+      audio.removeEventListener("play", sync)
+      audio.removeEventListener("pause", sync)
+    }
+  }, [])
+
+  const toggleMusic = async () => {
+    const audio = audioRef.current
+    if (!audio) return
+
+    if (audio.paused) {
+      try {
+        await audio.play()
+        setMusicOpen(true)
+      } catch {
+        setMusicOpen(true)
+        setIsPlaying(false)
+      }
+    } else {
+      audio.pause()
+    }
+  }
 
   const enterStory = () => {
     if (isTransitioning) return
     setIsTransitioning(true)
+
+    void audioRef.current?.play().catch(() => {
+      // Browsers may block audio until the user enables it from the music control.
+    })
 
     window.setTimeout(() => {
       setState("memory")
@@ -49,10 +90,10 @@ function App() {
                 transition={{ delay: 0.25, duration: 1, ease: [0.16, 1, 0.3, 1] }}
                 aria-hidden="true"
               >
-                <div className="memory-window-inner">
+                <img src="/media/dummy-cat.svg" alt="" />
+                <div className="memory-window-overlay">
                   <span>one year</span>
                   <strong>and still us.</strong>
-                  <i />
                 </div>
               </motion.div>
 
@@ -115,23 +156,45 @@ function App() {
                 </button>
               </div>
 
-              <div className="memory-card" aria-label="First chapter placeholder">
+              <motion.div
+                className="memory-card"
+                aria-label="First chapter placeholder"
+                initial={{ opacity: 0, y: 30, rotate: 5 }}
+                animate={{ opacity: 1, y: 0, rotate: 2 }}
+                transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              >
                 <div className="memory-card-top">
                   <span>chapter one</span>
                   <span>01</span>
                 </div>
                 <div className="memory-card-photo">
-                  <span>your first memory photo</span>
+                  <img src="/media/dummy-cat.svg" alt="Temporary development image" />
                 </div>
                 <div className="memory-card-caption">
                   <strong>Somewhere along the way.</strong>
                   <span>We started checking up on each other every day.</span>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.section>
         )}
       </AnimatePresence>
+
+      <button
+        className={`music-control ${musicOpen ? "is-open" : ""}`}
+        type="button"
+        onClick={toggleMusic}
+        aria-label={isPlaying ? "Pause music" : "Play music"}
+        aria-pressed={isPlaying}
+      >
+        <span className="music-dot" aria-hidden="true">
+          {isPlaying ? "Ⅱ" : "♪"}
+        </span>
+        <span className="music-copy">
+          <strong>Yellow</strong>
+          <small>{isPlaying ? "playing for you" : "music is off"}</small>
+        </span>
+      </button>
     </main>
   )
 }
