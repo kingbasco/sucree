@@ -6,12 +6,12 @@
   background: var(--ink);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  --ink: #ff5fa2;
-  --ink-soft: #ff79b3;
+  --ink: #f42272;
+  --ink-soft: #f94f8d;
   --paper: #fff7fb;
   --paper-soft: #ffd6e8;
-  --plum: #ff2f82;
-  --plum-deep: #d81b68;
+  --plum: #f42272;
+  --plum-deep: #d9145d;
   --mist: #ffe0ee;
   --white: #ffffff;
   --line: rgba(255, 253, 248, 0.16);
@@ -193,7 +193,7 @@ h2 em {
   overflow: hidden;
   background:
     linear-gradient(140deg, rgba(241, 233, 221, 0.07), rgba(255, 47, 130, 0.34)),
-    #ff3f8d;
+    #f42272;
 }
 
 .memory-window-inner::before {
@@ -363,7 +363,7 @@ h2 em {
   border: 1px solid rgba(241, 233, 221, 0.08);
   background:
     radial-gradient(circle at 30% 30%, rgba(217, 204, 188, 0.22), transparent 28%),
-    linear-gradient(145deg, #ff8fbd, #ff3f8d 70%, #e91f70);
+    linear-gradient(145deg, #ff8aad, #ff3f8d 70%, #dc165f);
   color: rgba(241, 233, 221, 0.45);
   font-family: "DM Mono", monospace;
   font-size: 0.58rem;
