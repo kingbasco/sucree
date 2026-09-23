@@ -46,6 +46,30 @@ const memories = [
     note: "Some of my favourite memories were simply being there with you.",
     image: "/media/dummy-night.svg",
   },
+  {
+    number: "06",
+    label: "when you came back",
+    title: "Then we started talking about our first date.",
+    body: "You told your mom. You cried. Somehow, through all the nerves and conversations, we finally got to the day we had been talking about.",
+    note: "We didn't know yet that this would become our date.",
+    image: "/media/dummy-date.svg",
+  },
+  {
+    number: "07",
+    label: "23 september 2025",
+    title: "Then you came back to the table.",
+    body: "I saw you. You went to the bedroom to adjust. I told the waiter to do something, and when you came back, we talked, ate, and waited.",
+    note: "Then that little cake arrived with one very important question.",
+    image: "/media/dummy-date.svg",
+  },
+  {
+    number: "08",
+    label: "the first yes",
+    title: "And you said yes.",
+    body: "The waiter asked you to be my girlfriend. You said yes. And just like that, September 23 stopped being an ordinary date.",
+    note: "The first yes. The yes that brought us here.",
+    image: "/media/dummy-yes.svg",
+  },
 ]
 
 function App() {
