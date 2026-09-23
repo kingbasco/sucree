@@ -312,7 +312,7 @@ function App() {
       <div className="ambient ambient-two" aria-hidden="true" />
 
       <AnimatePresence mode="wait">
-        {state === "opening" ? (
+        {state === "opening" && (
           <motion.section
             key="opening"
             className="opening scene"
@@ -365,7 +365,9 @@ function App() {
 
             <TransitionCover active={isTransitioning} />
           </motion.section>
-        ) : state === "story" ? ( // Explicit story branch keeps the ending fallback reachable.
+        )}
+
+        {state === "story" && (
 
           <motion.section
             key="story"
@@ -456,7 +458,9 @@ function App() {
               restart
             </button>
           </motion.section>
-        ) : (
+        )}
+
+        {state === "ending" && (
           <motion.section
             key="ending"
             className="ending scene"
