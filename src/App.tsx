@@ -102,6 +102,46 @@ const memories = [
     note: "I still remember the little things you did before you knew how much they would mean to me.",
     image: "/media/dummy-gift.svg",
   },
+  {
+    number: "13",
+    label: "the next season",
+    title: "Then came the exams again.",
+    body: "Law School kept asking for your attention. There were more reading days, more preparation, more visits, and more moments where I just wanted to be there with you.",
+    note: "Loving you also meant learning how to support you through the seasons that demanded so much from you.",
+    image: "/media/dummy-night.svg",
+  },
+  {
+    number: "14",
+    label: "the little visits",
+    title: "We kept finding our little moments.",
+    body: "Between everything going on, we still found time for each other. Sometimes it was a visit. Sometimes it was just sitting together and talking. The ordinary moments kept becoming memories.",
+    note: "Not every beautiful memory needed a big plan.",
+    image: "/media/dummy-date.svg",
+  },
+  {
+    number: "15",
+    label: "not always perfect",
+    title: "We fought too.",
+    body: "We had misunderstandings. We got upset. Sometimes we didn't understand each other the way we wanted to. But we kept coming back, talking, listening, and finding our way back to each other.",
+    note: "We were never promised a perfect year. We were building a real one.",
+    image: "/media/dummy-chat.svg",
+  },
+  {
+    number: "16",
+    label: "your birthday",
+    title: "Then came your birthday.",
+    body: "You came to my house. We went out, realised the first restaurant wasn't quite it, found another one, and still ended up having a beautiful day together.",
+    note: "Even when the plan changed, being with you was still the best part.",
+    image: "/media/dummy-date.svg",
+  },
+  {
+    number: "17",
+    label: "just us being silly",
+    title: "There were amusement parks and ice cream too.",
+    body: "We went out, ate ice cream, played, laughed, and made the kind of memories that don't need a special occasion to matter.",
+    note: "A whole year of little versions of us.",
+    image: "/media/dummy-picnic.svg",
+  },
 ]
 
 function App() {
