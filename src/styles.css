@@ -798,3 +798,213 @@ h2 em {
     transition: none;
   }
 }
+
+
+.ending {
+  position: relative;
+  display: grid;
+  min-height: 100vh;
+  overflow: hidden;
+  place-items: center;
+  padding: 100px 24px 80px;
+  color: var(--paper);
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255, 247, 251, 0.13), transparent 28%),
+    radial-gradient(circle at 15% 20%, rgba(255, 214, 232, 0.2), transparent 24%),
+    var(--ink);
+}
+
+.ending::before {
+  position: absolute;
+  inset: 7%;
+  content: "";
+  border: 1px solid rgba(255, 247, 251, 0.18);
+  border-radius: 50%;
+  transform: rotate(-8deg);
+}
+
+.ending-orbit {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ending-orbit span {
+  position: absolute;
+  border: 1px solid rgba(255, 247, 251, 0.18);
+  border-radius: 50%;
+}
+
+.ending-orbit span:nth-child(1) {
+  width: 38vw;
+  height: 38vw;
+  min-width: 300px;
+  min-height: 300px;
+  top: 12%;
+  left: 8%;
+}
+
+.ending-orbit span:nth-child(2) {
+  width: 24vw;
+  height: 24vw;
+  min-width: 210px;
+  min-height: 210px;
+  right: 10%;
+  bottom: 14%;
+  border-color: rgba(255, 247, 251, 0.12);
+}
+
+.ending-orbit span:nth-child(3) {
+  width: 10px;
+  height: 10px;
+  top: 24%;
+  right: 21%;
+  border: 0;
+  background: var(--paper);
+  box-shadow: 0 0 28px rgba(255, 247, 251, 0.7);
+}
+
+.ending-content {
+  position: relative;
+  z-index: 2;
+  width: min(760px, 100%);
+  text-align: center;
+}
+
+.ending-content .eyebrow {
+  color: var(--mist);
+  margin-bottom: 18px;
+}
+
+.ending-content h1 {
+  margin: 0 auto;
+  max-width: 9ch;
+  color: var(--paper);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(4.5rem, 11vw, 9rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.78;
+}
+
+.ending-content h1 span {
+  display: block;
+}
+
+.ending-content h1 em {
+  display: block;
+  color: var(--mist);
+  font-style: italic;
+  transform: translateX(0.08em);
+}
+
+.ending-copy {
+  width: min(540px, 100%);
+  margin: 34px auto 0;
+  color: rgba(255, 247, 251, 0.84);
+  font-size: 0.96rem;
+  line-height: 1.8;
+}
+
+.ending-signoff {
+  margin: 25px 0 30px;
+  color: var(--paper);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  font-style: italic;
+}
+
+.ending-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 30px;
+  min-height: 54px;
+  padding: 8px 10px 8px 22px;
+  border: 1px solid rgba(255, 247, 251, 0.3);
+  border-radius: 999px;
+  color: var(--paper);
+  background: rgba(255, 247, 251, 0.08);
+  cursor: pointer;
+  font-family: "DM Mono", monospace;
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: transform 220ms ease, background 220ms ease, border-color 220ms ease;
+}
+
+.ending-button span:last-child {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--ink);
+  background: var(--paper);
+  font-size: 0.9rem;
+}
+
+.ending-button:hover {
+  border-color: rgba(255, 247, 251, 0.65);
+  background: rgba(255, 247, 251, 0.14);
+  transform: translateY(-3px);
+}
+
+.ending-footer {
+  position: absolute;
+  right: clamp(24px, 4vw, 64px);
+  bottom: 28px;
+  left: clamp(24px, 4vw, 64px);
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  color: rgba(255, 247, 251, 0.58);
+  font-family: "DM Mono", monospace;
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 760px) {
+  .ending {
+    padding: 90px 22px 100px;
+  }
+
+  .ending::before {
+    inset: 5%;
+  }
+
+  .ending-content h1 {
+    font-size: clamp(4rem, 18vw, 6rem);
+  }
+
+  .ending-copy {
+    font-size: 0.9rem;
+  }
+
+  .ending-footer {
+    gap: 14px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .ending-orbit span:nth-child(1) {
+    width: 76vw;
+    height: 76vw;
+    top: 10%;
+    left: -26%;
+  }
+
+  .ending-orbit span:nth-child(2) {
+    width: 52vw;
+    height: 52vw;
+    right: -20%;
+    bottom: 18%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ending-button {
+    transition: none;
+  }
+}
