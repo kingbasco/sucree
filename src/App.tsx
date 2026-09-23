@@ -12,6 +12,7 @@ const memories = [
     title: "It started on Snapchat.",
     body: "I added you. We talked about family. Then somehow, the streaks became a reason to keep coming back.",
     note: "A conversation that didn't know where it was going yet.",
+    image: "/media/dummy-cat.svg",
   },
   {
     number: "02",
@@ -19,6 +20,7 @@ const memories = [
     title: "You came looking for reels.",
     body: "You replied to my story with that little complaint: “So you share reels with people and you don't share with me?”",
     note: "And just like that, Instagram became part of the story.",
+    image: "/media/dummy-cat.svg",
   },
   {
     number: "03",
