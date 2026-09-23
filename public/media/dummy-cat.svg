@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#201a18"/>
+      <stop offset=".55" stop-color="#6b3e55"/>
+      <stop offset="1" stop-color="#b39a84"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".25" cy=".2" r=".8">
+      <stop offset="0" stop-color="#fff3dc" stop-opacity=".3"/>
+      <stop offset="1" stop-color="#fff3dc" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <rect width="800" height="1000" fill="url(#glow)"/>
+  <circle cx="400" cy="490" r="225" fill="#171310" opacity=".88"/>
+  <path d="M220 330 L270 175 L370 300 Q400 288 430 300 L530 175 L580 330 L555 650 Q400 760 245 650Z" fill="#171310"/>
+  <circle cx="325" cy="475" r="16" fill="#f1e9dd"/>
+  <circle cx="475" cy="475" r="16" fill="#f1e9dd"/>
+  <circle cx="325" cy="475" r="7" fill="#15130f"/>
+  <circle cx="475" cy="475" r="7" fill="#15130f"/>
+  <path d="M380 530 Q400 548 420 530 Q400 570 380 530Z" fill="#b88991"/>
+  <path d="M400 552 Q360 595 315 570 M400 552 Q440 595 485 570" fill="none" stroke="#f1e9dd" stroke-opacity=".65" stroke-width="8" stroke-linecap="round"/>
+  <text x="52" y="910" fill="#fffdf8" font-family="Georgia, serif" font-size="54" font-style="italic">temporary memory</text>
+  <text x="55" y="950" fill="#f1e9dd" font-family="monospace" font-size="18" letter-spacing="4">DEVELOPMENT IMAGE</text>
+</svg>
