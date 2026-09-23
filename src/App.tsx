@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
 
-type ExperienceState = "opening" | "story"
+type ExperienceState = "opening" | "story" | "ending"
 
 const dates = "23.09.25  /  23.09.26"
 
@@ -290,7 +290,14 @@ function App() {
   }
 
   const changeMemory = (direction: 1 | -1) => {
-    setStoryIndex((current) => Math.min(Math.max(current + direction, 0), memories.length - 1))
+    setStoryIndex((current) => {
+      const next = current + direction
+      if (next >= memories.length) {
+        setState("ending")
+        return current
+      }
+      return Math.max(next, 0)
+    })
   }
 
   const memory = memories[storyIndex]
@@ -418,7 +425,7 @@ function App() {
                   <button
                     type="button"
                     onClick={() => changeMemory(1)}
-                    disabled={storyIndex === memories.length - 1}
+                    aria-label={storyIndex === memories.length - 1 ? "Finish the story" : "Next memory"}
                   >
                     →
                   </button>
@@ -444,6 +451,42 @@ function App() {
             <button className="story-back" type="button" onClick={() => setState("opening")}>
               restart
             </button>
+          </motion.section>
+        ) : (
+          <motion.section
+            key="ending"
+            className="ending scene"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="ending-orbit" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </div>
+
+            <div className="ending-content">
+              <p className="eyebrow">23 september 2026 · one year</p>
+              <h1>
+                <span>Still</span>
+                <em> choosing you.</em>
+              </h1>
+              <p className="ending-copy">
+                Thank you for choosing life with me. I never want to take you for granted.
+                We started this thing together, baby, and I want to see it all the way through.
+              </p>
+              <p className="ending-signoff">Till death do us part.</p>
+              <button type="button" className="ending-button" onClick={() => setState("opening")}>
+                <span>read it again</span>
+                <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+
+            <div className="ending-footer">
+              <span>for my girl</span>
+              <span>23 / 09 / 25 — 23 / 09 / 26</span>
+            </div>
           </motion.section>
         )}
       </AnimatePresence>
