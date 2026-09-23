@@ -236,6 +236,7 @@ function App() {
   const [state, setState] = useState<ExperienceState>("opening")
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [storyIndex, setStoryIndex] = useState(0)
+  const [storyDirection, setStoryDirection] = useState<1 | -1>(1)
   const [musicOpen, setMusicOpen] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -285,11 +286,13 @@ function App() {
     window.setTimeout(() => {
       setState("story")
       setStoryIndex(0)
+      setStoryDirection(1)
       setIsTransitioning(false)
     }, 1050)
   }
 
   const changeMemory = (direction: 1 | -1) => {
+    setStoryDirection(direction)
     setStoryIndex((current) => {
       const next = current + direction
       if (next >= memories.length) {
@@ -386,10 +389,10 @@ function App() {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={memory.number}
-                    initial={{ opacity: 0, y: 22 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -18 }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    initial={{ opacity: 0, x: storyDirection * 34, y: 14, filter: "blur(6px)" }}
+                    animate={{ opacity: 1, x: 0, y: 0, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, x: storyDirection * -28, y: -10, filter: "blur(5px)" }}
+                    transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                   >
                     <p className="eyebrow">{memory.label}</p>
                     <h2>{memory.title}</h2>
@@ -404,10 +407,10 @@ function App() {
                   <motion.div
                     key={memory.number}
                     className="story-photo"
-                    initial={{ opacity: 0, scale: 0.92, rotate: storyIndex % 2 ? 2 : -2 }}
-                    animate={{ opacity: 1, scale: 1, rotate: storyIndex % 2 ? -1 : 1 }}
-                    exit={{ opacity: 0, scale: 1.04, rotate: 3 }}
-                    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                    initial={{ opacity: 0, x: storyDirection * 46, scale: 0.94, rotate: storyDirection * 2, filter: "blur(8px)" }}
+                    animate={{ opacity: 1, x: 0, scale: 1, rotate: storyIndex % 2 ? -1 : 1, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, x: storyDirection * -36, scale: 1.03, rotate: storyDirection * -2, filter: "blur(6px)" }}
+                    transition={{ duration: 0.72, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <img src={memory.image} alt="" />
                     <div className="story-photo-label">
