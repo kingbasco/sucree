@@ -365,7 +365,8 @@ function App() {
 
             <TransitionCover active={isTransitioning} />
           </motion.section>
-        ) : state === "story" ? (
+        ) : state === "story" ? ( // Explicit story branch keeps the ending fallback reachable.
+
           <motion.section
             key="story"
             className="story scene"
