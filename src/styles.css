@@ -149,12 +149,44 @@ h2 em {
   color: var(--ink);
   background: var(--paper);
   cursor: pointer;
-  transition: border-color 180ms ease, background 180ms ease;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), border-color 180ms ease, background 180ms ease, box-shadow 220ms ease;
 }
 
 .yes-button:hover {
   border-color: var(--paper);
   background: var(--white);
+  transform: translateY(-3px) scale(1.015);
+  box-shadow: 0 12px 30px rgba(217, 20, 93, 0.16);
+}
+
+.yes-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.story-controls button {
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), background 180ms ease, border-color 180ms ease;
+}
+
+.story-controls button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.story-controls button:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.ending-button {
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), background 180ms ease, color 180ms ease;
+}
+
+.ending-button:hover {
+  transform: translateY(-3px);
+}
+
+.ending-button:active {
+  transform: scale(0.97);
 }
 
 .button-arrow {
