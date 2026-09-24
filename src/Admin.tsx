@@ -44,12 +44,10 @@ export default function Admin() {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session)
       if (data.session) void loadContent()
-      else setLoading(false)
     })
     const { data: listener } = supabase.auth.onAuthStateChange((_event, next) => {
       setSession(next)
       if (next) void loadContent()
-      else setLoading(false)
     })
     return () => listener.subscription.unsubscribe()
   }, [])
