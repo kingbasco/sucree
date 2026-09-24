@@ -15,17 +15,6 @@ type Memory = {
 
 type SiteContent = Record<string, string>
 
-const emptyMemory = (): Memory => ({
-  id: "",
-  number: 1,
-  label: "",
-  title: "",
-  body: "",
-  note: "",
-  image_url: null,
-  is_visible: true,
-})
-
 const contentLabels: Record<string, string> = {
   ending_eyebrow: "Ending eyebrow",
   ending_title: "Ending title (use | between lines)",
@@ -44,14 +33,12 @@ export default function Admin() {
   const [content, setContent] = useState<SiteContent>({})
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState("")
   const [search, setSearch] = useState("")
 
   useEffect(() => {
     if (!supabase) {
-      setLoading(false)
       return
     }
     supabase.auth.getSession().then(({ data }) => {
@@ -69,7 +56,6 @@ export default function Admin() {
 
   async function loadContent() {
     if (!supabase) return
-    setLoading(true)
     const [memoryResult, contentResult] = await Promise.all([
       supabase.from("memories").select("*").order("number"),
       supabase.from("site_content").select("id,value"),
@@ -81,7 +67,6 @@ export default function Admin() {
       for (const row of contentResult.data ?? []) next[row.id] = row.value
       setContent(next)
     }
-    setLoading(false)
   }
 
   async function signIn(event: FormEvent) {
