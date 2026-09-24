@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
+import { supabase } from "./lib/supabase"
 
 type ExperienceState = "opening" | "story" | "ending"
 
@@ -239,7 +240,33 @@ function App() {
   const [storyDirection, setStoryDirection] = useState<1 | -1>(1)
   const [musicOpen, setMusicOpen] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [remoteMemories, setRemoteMemories] = useState<typeof memories | null>(null)
+  const [endingContent, setEndingContent] = useState<Record<string, string>>({})
   const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    if (!supabase) return
+    void Promise.all([
+      supabase.from("memories").select("*").eq("is_visible", true).order("number"),
+      supabase.from("site_content").select("id,value"),
+    ]).then(([memoryResult, contentResult]) => {
+      if (!memoryResult.error && memoryResult.data?.length) {
+        setRemoteMemories(memoryResult.data.map((item) => ({
+          number: String(item.number).padStart(2, "0"),
+          label: item.label,
+          title: item.title,
+          body: item.body,
+          note: item.note,
+          image: item.image_url || "/media/dummy-cat.svg",
+        })))
+      }
+      if (!contentResult.error) {
+        const next: Record<string, string> = {}
+        for (const item of contentResult.data ?? []) next[item.id] = item.value
+        setEndingContent(next)
+      }
+    })
+  }, [])
 
   useEffect(() => {
     const audio = new Audio("/media/yellow.mp3")
@@ -295,7 +322,7 @@ function App() {
     setStoryDirection(direction)
     setStoryIndex((current) => {
       const next = current + direction
-      if (next >= memories.length) {
+      if (next >= activeMemories.length) {
         setState("ending")
         return current
       }
@@ -303,7 +330,8 @@ function App() {
     })
   }
 
-  const memory = memories[storyIndex]
+  const activeMemories = remoteMemories ?? memories
+  const memory = activeMemories[storyIndex] ?? activeMemories[0]
 
   return (
     <main className="experience">
@@ -335,7 +363,7 @@ function App() {
                 transition={{ delay: 0.25, duration: 1, ease: [0.16, 1, 0.3, 1] }}
                 aria-hidden="true"
               >
-                <img src="/media/dummy-cat.svg" alt="" />
+                <img src={activeMemories[0]?.image ?? "/media/dummy-cat.svg"} alt="" />
                 <div className="memory-window-overlay">
                   <span>one year</span>
                   <strong>and still us.</strong>
@@ -378,11 +406,11 @@ function App() {
           >
             <header className="topbar">
               <span className="wordmark">sucree</span>
-              <span className="chapter-label">how it started · {memory.number} / {memories.length}</span>
+              <span className="chapter-label">how it started · {memory.number} / {activeMemories.length}</span>
             </header>
 
             <div className="story-progress" aria-hidden="true">
-              {memories.map((item, index) => (
+              {activeMemories.map((item, index) => (
                 <span key={item.number} className={index === storyIndex ? "active" : ""} />
               ))}
             </div>
@@ -431,7 +459,7 @@ function App() {
                   <button
                     type="button"
                     onClick={() => changeMemory(1)}
-                    aria-label={storyIndex === memories.length - 1 ? "Finish the story" : "Next memory"}
+                    aria-label={storyIndex === activeMemories.length - 1 ? "Finish the story" : "Next memory"}
                   >
                     →
                   </button>
@@ -475,26 +503,24 @@ function App() {
             </div>
 
             <div className="ending-content">
-              <p className="eyebrow">23 september 2026 · one year</p>
+              <p className="eyebrow">{endingContent.ending_eyebrow || "23 september 2026 · one year"}</p>
               <h1>
-                <span>Still</span>
-                <em> choosing you.</em>
+                <span>{(endingContent.ending_title || "Still|choosing you.").split("|")[0]}</span>
+                <em>{(endingContent.ending_title || "Still|choosing you.").split("|").slice(1).join("|")}</em>
               </h1>
               <p className="ending-copy">
-                Thank you for choosing life with me. I never want to take you for granted.
-                We started this thing together, baby, and I want to see it all the way through.
+                {endingContent.ending_copy || "Thank you for choosing life with me. I never want to take you for granted. We started this thing together, baby, and I want to see it all the way through."}
               </p>
-              <p className="ending-signoff">Till death do us part.</p>
+              <p className="ending-signoff">{endingContent.ending_signoff || "Till death do us part."}</p>
 
               <details className="secret-note">
-                <summary>one last little thing</summary>
+                <summary>{endingContent.easter_egg_title || "one last little thing"}</summary>
                 <div className="secret-note-card">
-                  <span>23.09.25 → ∞</span>
+                  <span>{endingContent.easter_egg_date || "23.09.25 → ∞"}</span>
                   <p>
-                    If I had to start this whole story again, I would still find my way back to you.
-                    Same girl. Same yes. Same me, choosing you.
+                    {endingContent.easter_egg_body || "If I had to start this whole story again, I would still find my way back to you. Same girl. Same yes. Same me, choosing you."}
                   </p>
-                  <strong>Arigato, baby.</strong>
+                  <strong>{endingContent.easter_egg_signoff || "Arigato, baby."}</strong>
                 </div>
               </details>
 
