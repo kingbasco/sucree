@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
-import type { FormEvent } from "react"
+import type { FormEvent, ReactNode } from "react"
 import { supabase, isSupabaseConfigured } from "./lib/supabase"
 
 type Memory = {
@@ -296,6 +296,6 @@ export default function Admin() {
   )
 }
 
-function AdminShell({ children }: { children: React.ReactNode }) {
+function AdminShell({ children }: { children: ReactNode }) {
   return <main className="admin-page">{children}</main>
 }
