@@ -292,7 +292,8 @@ function App() {
   }, [remoteMemories])
 
   useEffect(() => {
-    const audio = new Audio("/media/yellow.mp3")
+    const source = endingContent.background_music_url || "/media/yellow.mp3"
+    const audio = new Audio(source)
     audio.loop = true
     audio.volume = 0.28
     audioRef.current = audio
@@ -564,7 +565,7 @@ function App() {
       >
         <span className="music-dot" aria-hidden="true">{isPlaying ? "Ⅱ" : "♪"}</span>
         <span className="music-copy">
-          <strong>Yellow</strong>
+          <strong>{endingContent.background_music_url ? "Our song" : "Yellow"}</strong>
           <small>{isPlaying ? "playing for you" : "music is off"}</small>
         </span>
       </button>
