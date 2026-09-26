@@ -9,7 +9,22 @@
     <title>Sucree</title>
   </head>
   <body>
+    <div id="boot-landing" aria-hidden="true"></div>
     <div id="root"></div>
+    <style>
+      #boot-landing {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: #f42272 center / cover no-repeat url("https://ubjhmrgzfuylbarraolb.supabase.co/storage/v1/object/public/sucree-media/landing/1790417284560-img-3519.jpeg");
+      }
+    </style>
+    <script>
+      try {
+        const cached = localStorage.getItem("sucree_landing_image_url");
+        if (cached) document.getElementById("boot-landing").style.backgroundImage = `url("${cached}")`;
+      } catch {}
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
