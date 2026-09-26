@@ -621,8 +621,9 @@ h2 em {
   aspect-ratio: 0.82;
   overflow: hidden;
   border: 1px solid rgba(241, 233, 221, 0.18);
-  background: var(--ink-soft);
+  background: #160b11;
   box-shadow: 0 34px 90px rgba(0, 0, 0, 0.3);
+  touch-action: pan-y;
 }
 
 .story-photo img,
@@ -700,7 +701,7 @@ h2 em {
   position: absolute;
   inset: 0;
   z-index: 3;
-  pointer-events: auto;
+  pointer-events: none;
   touch-action: pan-y;
 }
 
