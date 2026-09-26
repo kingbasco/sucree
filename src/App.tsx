@@ -374,7 +374,7 @@ function App() {
                 transition={{ delay: 0.25, duration: 1, ease: [0.16, 1, 0.3, 1] }}
                 aria-hidden="true"
               >
-                <img src={endingContent.landing_image_url || "/media/landing.svg"} alt="" />
+                <img src={endingContent.landing_image_url || "/media/landing.svg"} alt="" decoding="async" fetchPriority="high" />
                 <div className="memory-window-overlay">
                   <span>one year</span>
                   <strong>and still us.</strong>
@@ -446,7 +446,7 @@ function App() {
                     {memory.mediaType === "video" ? (
                       <video src={memory.image} autoPlay muted loop playsInline preload="metadata" aria-label="" />
                     ) : (
-                      <img src={memory.image} alt="" />
+                      <img src={memory.image} alt="" decoding="async" fetchPriority="high" />
                     )}
                   </motion.div>
                 </AnimatePresence>
