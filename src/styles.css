@@ -615,6 +615,21 @@ h2 em {
   margin-left: auto;
 }
 
+.story-media-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 0.82;
+  overflow: hidden;
+  background: #160b11;
+}
+
+.story-media-stage .story-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .story-photo {
   position: relative;
   width: 100%;
@@ -854,6 +869,12 @@ h2 em {
     inset: 0;
     width: 100%;
     margin: 0;
+  }
+
+  .story-media-stage {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
   }
 
   .story-photo {
