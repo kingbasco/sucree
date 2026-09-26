@@ -306,8 +306,7 @@ function App() {
         image.src = landingUrl
         image.decode?.().catch(() => undefined)
       } else {
-        setSiteContentLoaded(true)
-        setLandingImageReady(true)
+setLandingImageReady(true)
       }
     })
   }, [])
