@@ -2,6 +2,37 @@ import { useEffect, useMemo, useState } from "react"
 import type { FormEvent, ReactNode } from "react"
 import { supabase, isSupabaseConfigured } from "./lib/supabase"
 
+const MAX_IMAGE_DIMENSION = 2000
+const IMAGE_QUALITY = 0.82
+const MAX_VIDEO_SIZE_MB = 120
+
+async function optimizeImage(file: File): Promise<File> {
+  if (file.type === "image/gif" || file.type === "image/svg+xml" || !file.type.startsWith("image/")) return file
+  try {
+    const bitmap = await createImageBitmap(file)
+    const scale = Math.min(1, MAX_IMAGE_DIMENSION / Math.max(bitmap.width, bitmap.height))
+    const width = Math.max(1, Math.round(bitmap.width * scale))
+    const height = Math.max(1, Math.round(bitmap.height * scale))
+    const canvas = document.createElement("canvas")
+    canvas.width = width
+    canvas.height = height
+    const context = canvas.getContext("2d")
+    if (!context) { bitmap.close(); return file }
+    context.drawImage(bitmap, 0, 0, width, height)
+    bitmap.close()
+    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/webp", IMAGE_QUALITY))
+    if (!blob || blob.size >= file.size) return file
+    const baseName = file.name.replace(/\.[^.]+$/, "") || "memory"
+    return new File([blob], `${baseName}.webp`, { type: "image/webp", lastModified: Date.now() })
+  } catch {
+    return file
+  }
+}
+
+function formatMegabytes(bytes: number) {
+  return `${(bytes / 1024 / 1024).toFixed(1)} MB`
+}
+
 type Memory = {
   id: string
   number: number
@@ -120,12 +151,18 @@ export default function Admin() {
       setMessage("Please choose an image or video.")
       return
     }
-    const safeName = file.name.toLowerCase().replace(/[^a-z0-9.-]+/g, "-")
+    if (isVideo && file.size > MAX_VIDEO_SIZE_MB * 1024 * 1024) {
+      setSaving(false)
+      setMessage(`Video is too large. Please keep videos under ${MAX_VIDEO_SIZE_MB} MB.`)
+      return
+    }
+    const optimized = isImage ? await optimizeImage(file) : file
+    const safeName = optimized.name.toLowerCase().replace(/[^a-z0-9.-]+/g, "-")
     const path = `memories/${Date.now()}-${safeName}`
-    const upload = await supabase.storage.from("sucree-media").upload(path, file, {
+    const upload = await supabase.storage.from("sucree-media").upload(path, optimized, {
       cacheControl: "31536000",
       upsert: false,
-      contentType: file.type,
+      contentType: optimized.type,
     })
     if (upload.error) {
       setSaving(false)
@@ -135,18 +172,28 @@ export default function Admin() {
     const { data } = supabase.storage.from("sucree-media").getPublicUrl(path)
     setSelected({ ...selected, image_url: data.publicUrl, media_type: isVideo ? "video" : "image" })
     setSaving(false)
-    setMessage(`${isVideo ? "Video" : "Image"} uploaded. Save the memory to publish it.`)
+    const sizeMessage = isImage && optimized.size < file.size
+      ? ` Optimized from ${formatMegabytes(file.size)} to ${formatMegabytes(optimized.size)}.`
+      : ""
+    setMessage(`${isVideo ? "Video" : "Image"} uploaded.${sizeMessage} Save the memory to publish it.`)
   }
 
   async function uploadLandingImage(file: File) {
     if (!supabase) return
     setSaving(true)
     setMessage("")
-    const safeName = file.name.toLowerCase().replace(/[^a-z0-9.-]+/g, "-")
+    if (!file.type.startsWith("image/")) {
+      setSaving(false)
+      setMessage("Please choose an image.")
+      return
+    }
+    const optimized = await optimizeImage(file)
+    const safeName = optimized.name.toLowerCase().replace(/[^a-z0-9.-]+/g, "-")
     const path = `landing/${Date.now()}-${safeName}`
-    const upload = await supabase.storage.from("sucree-media").upload(path, file, {
+    const upload = await supabase.storage.from("sucree-media").upload(path, optimized, {
       cacheControl: "31536000",
       upsert: false,
+      contentType: optimized.type,
     })
     if (upload.error) {
       setSaving(false)
@@ -287,7 +334,7 @@ export default function Admin() {
               <label>Story<textarea rows={7} value={selected.body} onChange={(e) => setSelected({ ...selected, body: e.target.value })} /></label>
               <label>Little note<textarea rows={3} value={selected.note} onChange={(e) => setSelected({ ...selected, note: e.target.value })} /></label>
               <div className="admin-image-box">
-                <div>{selected.image_url ? (selected.media_type === "video" ? <video src={selected.image_url} muted loop playsInline controls /> : <img src={selected.image_url} alt="" />) : <span>No image or video yet</span>}</div>
+                <div>{selected.image_url ? (selected.media_type === "video" ? <video src={selected.image_url} muted loop playsInline controls preload="metadata" /> : <img src={selected.image_url} alt="" loading="lazy" decoding="async" />) : <span>No image or video yet</span>}</div>
                 <label className="admin-upload">Replace media<input type="file" accept="image/*,video/*" onChange={(e) => e.target.files?.[0] && uploadMedia(e.target.files[0])} /></label>
               </div>
               <button className="admin-primary" type="submit" disabled={saving}>{saving ? "Saving..." : "Save memory"}</button>
@@ -301,7 +348,7 @@ export default function Admin() {
       <section className="admin-content-panel">
         <div><span className="admin-kicker">landing scene</span><h2>Landing image</h2><p>This image is separate from Memory 01.</p></div>
         <div className="admin-image-box">
-          <div>{content.landing_image_url ? <img src={content.landing_image_url} alt="" /> : <span>Using the default landing placeholder</span>}</div>
+          <div>{content.landing_image_url ? <img src={content.landing_image_url} alt="" loading="lazy" decoding="async" /> : <span>Using the default landing placeholder</span>}</div>
           <label className="admin-upload">Replace landing image<input type="file" accept="image/*" onChange={(e) => e.target.files?.[0] && uploadLandingImage(e.target.files[0])} /></label>
         </div>
         <button className="admin-primary" onClick={saveSiteContent} disabled={saving}>{saving ? "Saving..." : "Save landing image"}</button>
