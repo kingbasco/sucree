@@ -409,12 +409,11 @@ function App() {
 
             <div className="opening-content">
               <motion.div
-                className="memory-window"
-                initial={{ y: 28, opacity: 0, rotate: -2 }}
-                animate={{ y: 0, opacity: 1, rotate: -1 }}
-                transition={{ delay: 0.25, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                className="landing-background"
+                initial={{ opacity: 0, scale: 1.04 }}
+                animate={{ opacity: siteContentLoaded && landingImageReady ? 1 : 0.82, scale: 1 }}
+                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
                 aria-hidden="true"
-                style={{ opacity: siteContentLoaded && landingImageReady ? 1 : 0 }}
               >
                 <img
                   src={endingContent.landing_image_url || "/media/landing.svg"}
@@ -423,7 +422,7 @@ function App() {
                   fetchPriority="high"
                   onLoad={() => setLandingImageReady(true)}
                 />
-                <div className="memory-window-overlay">
+                <div className="landing-background-overlay">
                   <span>one year</span>
                   <strong>and still us.</strong>
                 </div>
