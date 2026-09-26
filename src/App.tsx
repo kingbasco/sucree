@@ -280,6 +280,18 @@ function App() {
   }, [])
 
   useEffect(() => {
+    const imageUrls = (remoteMemories ?? memories)
+      .filter((item) => item.mediaType !== "video")
+      .map((item) => item.image)
+
+    imageUrls.forEach((src) => {
+      const image = new Image()
+      image.decoding = "async"
+      image.src = src
+    })
+  }, [remoteMemories])
+
+  useEffect(() => {
     const audio = new Audio("/media/yellow.mp3")
     audio.loop = true
     audio.volume = 0.28
@@ -463,14 +475,21 @@ function App() {
               </div>
 
               <div className="story-visual">
-                <AnimatePresence mode="wait">
+                <AnimatePresence initial={false}>
                   <motion.div
                     key={memory.number}
                     className="story-photo"
-                    initial={{ opacity: 1, x: storyDirection * 70, scale: 1, rotate: 0 }}
-                    animate={{ opacity: 1, x: 0, scale: 1, rotate: 0 }}
-                    exit={{ opacity: 1, x: storyDirection * -70, scale: 1, rotate: 0 }}
-                    transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1] }}
+                    initial={{ x: storyDirection * 110, scale: 0.96, rotate: storyDirection * 1.2 }}
+                    animate={{ x: 0, scale: 1, rotate: 0 }}
+                    exit={{ x: storyDirection * -110, scale: 0.96, rotate: storyDirection * -1.2 }}
+                    transition={{ duration: 0.52, ease: [0.22, 1, 0.36, 1] }}
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={0.14}
+                    onDragEnd={(_, info) => {
+                      if (Math.abs(info.offset.x) < 55) return
+                      changeMemory(info.offset.x < 0 ? 1 : -1)
+                    }}
                   >
                     {memory.mediaType === "video" ? (
                       <video src={memory.image} autoPlay muted loop playsInline preload="metadata" aria-label="" />
@@ -480,26 +499,10 @@ function App() {
                   </motion.div>
                 </AnimatePresence>
 
-
               </div>
             </div>
 
-            <div
-              className="story-swipe-zone"
-              onTouchStart={(event) => {
-                const start = event.changedTouches[0]?.clientX ?? 0
-                event.currentTarget.dataset.startX = String(start)
-              }}
-              onTouchEnd={(event) => {
-                const start = Number(event.currentTarget.dataset.startX ?? 0)
-                const end = event.changedTouches[0]?.clientX ?? start
-                if (Math.abs(end - start) < 45) return
-                changeMemory(end < start ? 1 : -1)
-              }}
-              aria-label="Swipe between memories"
-            />
-
-          </motion.section>
+            <div className="story-swipe-zone" aria-hidden="true" />
         )}
 
         {state === "ending" && (
