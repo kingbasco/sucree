@@ -444,10 +444,6 @@ function App() {
                     transition={{ duration: 0.72, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <img src={memory.image} alt="" />
-                    <div className="story-photo-label">
-                      <span>temporary photo</span>
-                      <strong>{memory.number}</strong>
-                    </div>
                   </motion.div>
                 </AnimatePresence>
 
