@@ -6,7 +6,17 @@ type ExperienceState = "opening" | "story" | "ending"
 
 const dates = "23.09.25  /  23.09.26"
 
-const memories = [
+type StoryMemory = {
+  number: string
+  label: string
+  title: string
+  body: string
+  note: string
+  image: string
+  mediaType?: "image" | "video"
+}
+
+const memories: StoryMemory[] = [
   {
     number: "01",
     label: "the first little thing",
@@ -240,7 +250,7 @@ function App() {
   const [storyDirection, setStoryDirection] = useState<1 | -1>(1)
   const [musicOpen, setMusicOpen] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [remoteMemories, setRemoteMemories] = useState<typeof memories | null>(null)
+  const [remoteMemories, setRemoteMemories] = useState<StoryMemory[] | null>(null)
   const [endingContent, setEndingContent] = useState<Record<string, string>>({})
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
