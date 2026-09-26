@@ -363,7 +363,7 @@ function App() {
                 transition={{ delay: 0.25, duration: 1, ease: [0.16, 1, 0.3, 1] }}
                 aria-hidden="true"
               >
-                <img src="/media/landing.svg" alt="" />
+                <img src={endingContent.landing_image_url || "/media/landing.svg"} alt="" />
                 <div className="memory-window-overlay">
                   <span>one year</span>
                   <strong>and still us.</strong>
