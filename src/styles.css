@@ -514,6 +514,35 @@ h2 em {
   padding: 0;
 }
 
+.landing-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--ink);
+}
+
+.landing-background::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    linear-gradient(180deg, rgba(20, 5, 12, 0.22) 0%, rgba(20, 5, 12, 0.08) 38%, rgba(20, 5, 12, 0.52) 100%),
+    linear-gradient(90deg, rgba(244, 34, 114, 0.28), transparent 55%);
+}
+
+.landing-background img,
+.landing-background img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.9;
+  filter: saturate(0.86) contrast(0.96);
+}
+
 .memory-window img,
 .story-photo img {
   display: block;
@@ -538,6 +567,22 @@ h2 em {
   font-size: 0.62rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+}
+
+.landing-background-overlay {
+  position: absolute;
+  right: clamp(20px, 5vw, 72px);
+  bottom: clamp(92px, 11vh, 132px);
+  left: clamp(20px, 5vw, 72px);
+  z-index: 1;
+  display: none;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.landing-background-overlay span,
+.landing-background-overlay strong {
+  color: var(--paper);
 }
 
 .memory-window-overlay strong {
