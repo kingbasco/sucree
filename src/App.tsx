@@ -253,7 +253,6 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [remoteMemories, setRemoteMemories] = useState<StoryMemory[] | null>(null)
   const [endingContent, setEndingContent] = useState<Record<string, string>>({})
-  const [siteContentLoaded, setSiteContentLoaded] = useState(false)
   const [landingImageReady, setLandingImageReady] = useState(true)
   const [landingImageUrl, setLandingImageUrl] = useState(() => {
     try {
@@ -289,7 +288,6 @@ function App() {
         const next: Record<string, string> = {}
         for (const item of contentResult.data ?? []) next[item.id] = item.value
         setEndingContent(next)
-        setSiteContentLoaded(true)
         const landingUrl = next.landing_image_url?.trim()
         if (!landingUrl) return
 
