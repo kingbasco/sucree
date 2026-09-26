@@ -265,6 +265,10 @@ function App() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
+    document.getElementById("boot-landing")?.remove()
+  }, [])
+
+  useEffect(() => {
     if (!supabase) return
     void Promise.all([
       supabase.from("memories").select("*").eq("is_visible", true).order("number"),
