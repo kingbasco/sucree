@@ -252,6 +252,8 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [remoteMemories, setRemoteMemories] = useState<StoryMemory[] | null>(null)
   const [endingContent, setEndingContent] = useState<Record<string, string>>({})
+  const [siteContentLoaded, setSiteContentLoaded] = useState(false)
+  const [landingImageReady, setLandingImageReady] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
@@ -275,6 +277,22 @@ function App() {
         const next: Record<string, string> = {}
         for (const item of contentResult.data ?? []) next[item.id] = item.value
         setEndingContent(next)
+        setSiteContentLoaded(true)
+        const landingUrl = next.landing_image_url?.trim()
+        if (!landingUrl) {
+          setLandingImageReady(true)
+          return
+        }
+
+        const image = new Image()
+        image.decoding = "async"
+        image.onload = () => setLandingImageReady(true)
+        image.onerror = () => setLandingImageReady(true)
+        image.src = landingUrl
+        image.decode?.().catch(() => undefined)
+      } else {
+        setSiteContentLoaded(true)
+        setLandingImageReady(true)
       }
     })
   }, [])
@@ -396,8 +414,15 @@ function App() {
                 animate={{ y: 0, opacity: 1, rotate: -1 }}
                 transition={{ delay: 0.25, duration: 1, ease: [0.16, 1, 0.3, 1] }}
                 aria-hidden="true"
+                style={{ opacity: siteContentLoaded && landingImageReady ? 1 : 0 }}
               >
-                <img src={endingContent.landing_image_url || "/media/landing.svg"} alt="" decoding="async" fetchPriority="high" />
+                <img
+                  src={endingContent.landing_image_url || "/media/landing.svg"}
+                  alt=""
+                  decoding="async"
+                  fetchPriority="high"
+                  onLoad={() => setLandingImageReady(true)}
+                />
                 <div className="memory-window-overlay">
                   <span>one year</span>
                   <strong>and still us.</strong>
