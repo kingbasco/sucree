@@ -10,6 +10,7 @@ type Memory = {
   body: string
   note: string
   image_url: string | null
+  media_type: "image" | "video"
   is_visible: boolean
 }
 
@@ -91,6 +92,7 @@ export default function Admin() {
       body: selected.body,
       note: selected.note,
       image_url: selected.image_url,
+      media_type: selected.media_type,
       is_visible: selected.is_visible,
       updated_at: new Date().toISOString(),
     }
@@ -107,15 +109,23 @@ export default function Admin() {
     await loadContent()
   }
 
-  async function uploadImage(file: File) {
+  async function uploadMedia(file: File) {
     if (!supabase || !selected) return
     setSaving(true)
     setMessage("")
+    const isVideo = file.type.startsWith("video/")
+    const isImage = file.type.startsWith("image/")
+    if (!isImage && !isVideo) {
+      setSaving(false)
+      setMessage("Please choose an image or video.")
+      return
+    }
     const safeName = file.name.toLowerCase().replace(/[^a-z0-9.-]+/g, "-")
     const path = `memories/${Date.now()}-${safeName}`
     const upload = await supabase.storage.from("sucree-media").upload(path, file, {
       cacheControl: "31536000",
       upsert: false,
+      contentType: file.type,
     })
     if (upload.error) {
       setSaving(false)
@@ -123,9 +133,9 @@ export default function Admin() {
       return
     }
     const { data } = supabase.storage.from("sucree-media").getPublicUrl(path)
-    setSelected({ ...selected, image_url: data.publicUrl })
+    setSelected({ ...selected, image_url: data.publicUrl, media_type: isVideo ? "video" : "image" })
     setSaving(false)
-    setMessage("Image uploaded. Save the memory to publish it.")
+    setMessage(`${isVideo ? "Video" : "Image"} uploaded. Save the memory to publish it.`)
   }
 
   async function uploadLandingImage(file: File) {
@@ -192,6 +202,7 @@ export default function Admin() {
       body: "Write the story here.",
       note: "Add a little note here.",
       is_visible: true,
+      media_type: "image",
     }).select().single()
     if (error) return setMessage(error.message)
     setMemories((current) => [...current, data as Memory].sort((a, b) => a.number - b.number))
@@ -276,8 +287,8 @@ export default function Admin() {
               <label>Story<textarea rows={7} value={selected.body} onChange={(e) => setSelected({ ...selected, body: e.target.value })} /></label>
               <label>Little note<textarea rows={3} value={selected.note} onChange={(e) => setSelected({ ...selected, note: e.target.value })} /></label>
               <div className="admin-image-box">
-                <div>{selected.image_url ? <img src={selected.image_url} alt="" /> : <span>No image yet</span>}</div>
-                <label className="admin-upload">Replace image<input type="file" accept="image/*" onChange={(e) => e.target.files?.[0] && uploadImage(e.target.files[0])} /></label>
+                <div>{selected.image_url ? (selected.media_type === "video" ? <video src={selected.image_url} muted loop playsInline controls /> : <img src={selected.image_url} alt="" />) : <span>No image or video yet</span>}</div>
+                <label className="admin-upload">Replace media<input type="file" accept="image/*,video/*" onChange={(e) => e.target.files?.[0] && uploadMedia(e.target.files[0])} /></label>
               </div>
               <button className="admin-primary" type="submit" disabled={saving}>{saving ? "Saving..." : "Save memory"}</button>
             </form>
