@@ -687,16 +687,24 @@ h2 em {
 .story-swipe-zone {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 3;
   pointer-events: auto;
+  touch-action: pan-y;
 }
 
-.story-content,
-.story-controls,
-.story-back {
+.story-content {
   position: relative;
   z-index: 2;
 }
+
+.story-controls {
+  position: relative;
+  z-index: 4;
+}
+
+.story-back {
+  position: absolute;
+  z-index: 7;
 
 .story-back {
   position: absolute;
@@ -771,6 +779,7 @@ h2 em {
   .music-control {
     right: 14px;
     bottom: 14px;
+    z-index: 30;
   }
 
   .music-copy {
@@ -911,7 +920,7 @@ h2 em {
   .story-controls {
     position: absolute;
     right: 22px;
-    bottom: 18px;
+    bottom: 72px;
     left: 22px;
     z-index: 4;
     margin-top: 0;
@@ -932,6 +941,7 @@ h2 em {
 
   .story-swipe-zone {
     inset: 92px 0 0;
+    z-index: 3;
   }
 
   .story-back {
