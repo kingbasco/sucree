@@ -6,6 +6,7 @@ const MAX_IMAGE_DIMENSION = 2000
 const IMAGE_QUALITY = 0.82
 const MAX_VIDEO_SIZE_MB = 120
 const MAX_AUDIO_SIZE_MB = 50
+const AUDIO_ACCEPT = ".mp3,.m4a,.wav,.aac,.ogg,audio/mpeg,audio/mp4,audio/wav,audio/x-wav,audio/aac,audio/ogg"
 
 async function optimizeImage(file: File): Promise<File> {
   if (file.type === "image/gif" || file.type === "image/svg+xml" || !file.type.startsWith("image/")) return file
@@ -183,7 +184,8 @@ export default function Admin() {
     if (!supabase) return
     setSaving(true)
     setMessage("")
-    if (!file.type.startsWith("audio/")) {
+    const audioExtension = /\.(mp3|m4a|wav|aac|ogg)$/i.test(file.name)
+    if (!file.type.startsWith("audio/") && !audioExtension) {
       setSaving(false)
       setMessage("Please choose an audio file.")
       return
@@ -391,7 +393,7 @@ export default function Admin() {
         <div><span className="admin-kicker">soundtrack</span><h2>Background music</h2><p>Upload the song that plays during the anniversary experience. MP3, M4A, WAV and other browser-supported audio files are accepted, up to 50 MB.</p></div>
         <div className="admin-image-box">
           <div>{content.background_music_url ? <audio src={content.background_music_url} controls preload="metadata" /> : <span>No background music uploaded</span>}</div>
-          <label className="admin-upload">Replace background music<input type="file" accept="audio/*" onChange={(e) => e.target.files?.[0] && uploadBackgroundMusic(e.target.files[0])} /></label>
+          <label className="admin-upload">Choose audio file<input type="file" accept={AUDIO_ACCEPT} onChange={(e) => e.target.files?.[0] && uploadBackgroundMusic(e.target.files[0])} /></label>
         </div>
         <button className="admin-primary" onClick={saveSiteContent} disabled={saving}>{saving ? "Saving..." : "Save background music"}</button>
       </section>
