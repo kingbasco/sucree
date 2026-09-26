@@ -427,6 +427,14 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.14}
+            dragDirectionLock
+            onDragEnd={(_, info) => {
+              if (Math.abs(info.offset.x) < 55) return
+              changeMemory(info.offset.x < 0 ? 1 : -1)
+            }}
           >
             <div className="story-content">
               <div className="story-copy">
@@ -484,13 +492,6 @@ function App() {
                     animate={{ x: 0, scale: 1, rotate: 0 }}
                     exit={{ x: storyDirection * -110, scale: 0.96, rotate: storyDirection * -1.2 }}
                     transition={{ duration: 0.52, ease: [0.22, 1, 0.36, 1] }}
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 0 }}
-                    dragElastic={0.14}
-                    onDragEnd={(_, info) => {
-                      if (Math.abs(info.offset.x) < 55) return
-                      changeMemory(info.offset.x < 0 ? 1 : -1)
-                    }}
                   >
                     {memory.mediaType === "video" ? (
                       <video src={memory.image} autoPlay muted loop playsInline preload="metadata" aria-label="" />
