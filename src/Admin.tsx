@@ -5,6 +5,7 @@ import { supabase, isSupabaseConfigured } from "./lib/supabase"
 const MAX_IMAGE_DIMENSION = 2000
 const IMAGE_QUALITY = 0.82
 const MAX_VIDEO_SIZE_MB = 120
+const MAX_AUDIO_SIZE_MB = 50
 
 async function optimizeImage(file: File): Promise<File> {
   if (file.type === "image/gif" || file.type === "image/svg+xml" || !file.type.startsWith("image/")) return file
@@ -176,6 +177,38 @@ export default function Admin() {
       ? ` Optimized from ${formatMegabytes(file.size)} to ${formatMegabytes(optimized.size)}.`
       : ""
     setMessage(`${isVideo ? "Video" : "Image"} uploaded.${sizeMessage} Save the memory to publish it.`)
+  }
+
+  async function uploadBackgroundMusic(file: File) {
+    if (!supabase) return
+    setSaving(true)
+    setMessage("")
+    if (!file.type.startsWith("audio/")) {
+      setSaving(false)
+      setMessage("Please choose an audio file.")
+      return
+    }
+    if (file.size > MAX_AUDIO_SIZE_MB * 1024 * 1024) {
+      setSaving(false)
+      setMessage(`Audio is too large. Please keep it under ${MAX_AUDIO_SIZE_MB} MB.`)
+      return
+    }
+    const safeName = file.name.toLowerCase().replace(/[^a-z0-9.-]+/g, "-")
+    const path = `audio/${Date.now()}-${safeName}`
+    const upload = await supabase.storage.from("sucree-media").upload(path, file, {
+      cacheControl: "31536000",
+      upsert: false,
+      contentType: file.type,
+    })
+    if (upload.error) {
+      setSaving(false)
+      setMessage(upload.error.message)
+      return
+    }
+    const { data } = supabase.storage.from("sucree-media").getPublicUrl(path)
+    setContent((current) => ({ ...current, background_music_url: data.publicUrl }))
+    setSaving(false)
+    setMessage("Background music uploaded. Save it below to publish.")
   }
 
   async function uploadLandingImage(file: File) {
@@ -352,6 +385,15 @@ export default function Admin() {
           <label className="admin-upload">Replace landing image<input type="file" accept="image/*" onChange={(e) => e.target.files?.[0] && uploadLandingImage(e.target.files[0])} /></label>
         </div>
         <button className="admin-primary" onClick={saveSiteContent} disabled={saving}>{saving ? "Saving..." : "Save landing image"}</button>
+      </section>
+
+      <section className="admin-content-panel">
+        <div><span className="admin-kicker">soundtrack</span><h2>Background music</h2><p>Upload the song that plays during the anniversary experience. MP3, M4A, WAV and other browser-supported audio files are accepted, up to 50 MB.</p></div>
+        <div className="admin-image-box">
+          <div>{content.background_music_url ? <audio src={content.background_music_url} controls preload="metadata" /> : <span>No background music uploaded</span>}</div>
+          <label className="admin-upload">Replace background music<input type="file" accept="audio/*" onChange={(e) => e.target.files?.[0] && uploadBackgroundMusic(e.target.files[0])} /></label>
+        </div>
+        <button className="admin-primary" onClick={saveSiteContent} disabled={saving}>{saving ? "Saving..." : "Save background music"}</button>
       </section>
 
       <section className="admin-content-panel">
