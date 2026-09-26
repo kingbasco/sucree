@@ -302,8 +302,10 @@ function App() {
   useEffect(() => {
     const source = endingContent.background_music_url || "/media/yellow.mp3"
     const audio = new Audio(source)
+    audio.preload = "auto"
     audio.loop = true
     audio.volume = 0.28
+    audio.load()
     audioRef.current = audio
 
     const sync = () => setIsPlaying(!audio.paused)
