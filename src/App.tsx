@@ -280,14 +280,22 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const imageUrls = (remoteMemories ?? memories)
-      .filter((item) => item.mediaType !== "video")
-      .map((item) => item.image)
+    const media = remoteMemories ?? memories
 
-    imageUrls.forEach((src) => {
+    media.forEach((item) => {
+      if (item.mediaType === "video") {
+        const video = document.createElement("video")
+        video.preload = "auto"
+        video.muted = true
+        video.playsInline = true
+        video.src = item.image
+        video.load()
+        return
+      }
+
       const image = new Image()
       image.decoding = "async"
-      image.src = src
+      image.src = item.image
     })
   }, [remoteMemories])
 
@@ -484,23 +492,24 @@ function App() {
               </div>
 
               <div className="story-visual">
-                <AnimatePresence initial={false}>
-                  <motion.div
-                    key={memory.number}
-                    className="story-photo"
-                    initial={{ x: storyDirection * 110, scale: 0.96, rotate: storyDirection * 1.2 }}
-                    animate={{ x: 0, scale: 1, rotate: 0 }}
-                    exit={{ x: storyDirection * -110, scale: 0.96, rotate: storyDirection * -1.2 }}
-                    transition={{ duration: 0.52, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    {memory.mediaType === "video" ? (
-                      <video src={memory.image} autoPlay muted loop playsInline preload="metadata" aria-label="" />
-                    ) : (
-                      <img src={memory.image} alt="" loading="eager" decoding="async" />
-                    )}
-                  </motion.div>
-                </AnimatePresence>
-
+                <div className="story-media-stage">
+                  <AnimatePresence initial={false} mode="sync">
+                    <motion.div
+                      key={memory.number}
+                      className="story-photo"
+                      initial={{ x: storyDirection * 100, scale: 0.985, rotate: storyDirection * 0.8 }}
+                      animate={{ x: 0, scale: 1, rotate: 0 }}
+                      exit={{ x: storyDirection * -100, scale: 0.985, rotate: storyDirection * -0.8 }}
+                      transition={{ duration: 0.62, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      {memory.mediaType === "video" ? (
+                        <video src={memory.image} autoPlay muted loop playsInline preload="auto" aria-label="" />
+                      ) : (
+                        <img src={memory.image} alt="" loading="eager" decoding="async" />
+                      )}
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
               </div>
             </div>
 
