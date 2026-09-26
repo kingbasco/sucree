@@ -467,15 +467,15 @@ function App() {
                   <motion.div
                     key={memory.number}
                     className="story-photo"
-                    initial={{ opacity: 0, x: storyDirection * 46, scale: 0.94, rotate: storyDirection * 2, filter: "blur(8px)" }}
-                    animate={{ opacity: 1, x: 0, scale: 1, rotate: 0, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, x: storyDirection * -36, scale: 1.03, rotate: storyDirection * -2, filter: "blur(6px)" }}
-                    transition={{ duration: 0.72, ease: [0.16, 1, 0.3, 1] }}
+                    initial={{ opacity: 1, x: storyDirection * 70, scale: 1, rotate: 0 }}
+                    animate={{ opacity: 1, x: 0, scale: 1, rotate: 0 }}
+                    exit={{ opacity: 1, x: storyDirection * -70, scale: 1, rotate: 0 }}
+                    transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1] }}
                   >
                     {memory.mediaType === "video" ? (
                       <video src={memory.image} autoPlay muted loop playsInline preload="metadata" aria-label="" />
                     ) : (
-                      <img src={memory.image} alt="" decoding="async" fetchPriority="high" />
+                      <img src={memory.image} alt="" loading="eager" decoding="async" />
                     )}
                   </motion.div>
                 </AnimatePresence>
