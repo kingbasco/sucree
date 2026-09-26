@@ -5,6 +5,7 @@ import { supabase } from "./lib/supabase"
 type ExperienceState = "opening" | "story" | "ending"
 
 const dates = "23.09.25  /  23.09.26"
+const INITIAL_LANDING_IMAGE_URL = "https://ubjhmrgzfuylbarraolb.supabase.co/storage/v1/object/public/sucree-media/landing/1790417284560-img-3519.jpeg"
 
 type StoryMemory = {
   number: string
@@ -253,7 +254,14 @@ function App() {
   const [remoteMemories, setRemoteMemories] = useState<StoryMemory[] | null>(null)
   const [endingContent, setEndingContent] = useState<Record<string, string>>({})
   const [siteContentLoaded, setSiteContentLoaded] = useState(false)
-  const [landingImageReady, setLandingImageReady] = useState(false)
+  const [landingImageReady, setLandingImageReady] = useState(true)
+  const [landingImageUrl, setLandingImageUrl] = useState(() => {
+    try {
+      return localStorage.getItem("sucree_landing_image_url") || INITIAL_LANDING_IMAGE_URL
+    } catch {
+      return INITIAL_LANDING_IMAGE_URL
+    }
+  })
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
@@ -279,9 +287,14 @@ function App() {
         setEndingContent(next)
         setSiteContentLoaded(true)
         const landingUrl = next.landing_image_url?.trim()
-        if (!landingUrl) {
-          setLandingImageReady(true)
-          return
+        if (!landingUrl) return
+
+        setLandingImageReady(false)
+        setLandingImageUrl(landingUrl)
+        try {
+          localStorage.setItem("sucree_landing_image_url", landingUrl)
+        } catch {
+          // Ignore storage failures; the image still loads normally.
         }
 
         const image = new Image()
@@ -408,7 +421,7 @@ function App() {
             </header>
 
             <div className="opening-content">
-              {siteContentLoaded && endingContent.landing_image_url?.trim() && (
+              {landingImageUrl && (
                 <motion.div
                   className="landing-background"
                   initial={{ opacity: 0, scale: 1.02 }}
@@ -417,7 +430,7 @@ function App() {
                   aria-hidden="true"
                 >
                   <img
-                    src={endingContent.landing_image_url}
+                    src={landingImageUrl}
                     alt=""
                     decoding="async"
                     fetchPriority="high"
