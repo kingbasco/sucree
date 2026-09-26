@@ -439,7 +439,7 @@ function App() {
                     key={memory.number}
                     className="story-photo"
                     initial={{ opacity: 0, x: storyDirection * 46, scale: 0.94, rotate: storyDirection * 2, filter: "blur(8px)" }}
-                    animate={{ opacity: 1, x: 0, scale: 1, rotate: storyIndex % 2 ? -1 : 1, filter: "blur(0px)" }}
+                    animate={{ opacity: 1, x: 0, scale: 1, rotate: 0, filter: "blur(0px)" }}
                     exit={{ opacity: 0, x: storyDirection * -36, scale: 1.03, rotate: storyDirection * -2, filter: "blur(6px)" }}
                     transition={{ duration: 0.72, ease: [0.16, 1, 0.3, 1] }}
                   >
