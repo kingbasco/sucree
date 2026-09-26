@@ -420,15 +420,44 @@ function App() {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={memory.number}
-                    initial={{ opacity: 0, x: storyDirection * 34, y: 14, filter: "blur(6px)" }}
-                    animate={{ opacity: 1, x: 0, y: 0, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, x: storyDirection * -28, y: -10, filter: "blur(5px)" }}
+                    className="story-copy-inner"
+                    initial={{ opacity: 0, x: storyDirection * 34, y: 14 }}
+                    animate={{ opacity: 1, x: 0, y: 0 }}
+                    exit={{ opacity: 0, x: storyDirection * -28, y: -10 }}
                     transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <p className="eyebrow">{memory.label}</p>
-                    <h2>{memory.title}</h2>
-                    <p className="body-copy">{memory.body}</p>
-                    <p className="story-note">{memory.note}</p>
+                    <motion.p
+                      className="eyebrow story-reveal story-reveal-label"
+                      initial={{ opacity: 0, y: 12, filter: "blur(5px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      transition={{ delay: 0.08, duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {memory.label}
+                    </motion.p>
+                    <motion.h2
+                      className="story-reveal story-reveal-title"
+                      initial={{ opacity: 0, y: 28, filter: "blur(8px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      transition={{ delay: 0.16, duration: 0.62, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      {memory.title}
+                    </motion.h2>
+                    <motion.p
+                      className="body-copy story-reveal story-reveal-body"
+                      initial={{ opacity: 0, y: 22, filter: "blur(6px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      transition={{ delay: 0.28, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {memory.body}
+                    </motion.p>
+                    <motion.p
+                      className="story-note story-reveal story-reveal-note"
+                      initial={{ opacity: 0, y: 18, filter: "blur(5px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      transition={{ delay: 0.4, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {memory.note}
+                    </motion.p>
                   </motion.div>
                 </AnimatePresence>
               </div>
