@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Sucree landing placeholder</title>
+  <desc id="desc">A soft pink abstract placeholder for the anniversary landing image.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f42272"/>
+      <stop offset="1" stop-color="#d9145d"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="42%" r="60%">
+      <stop offset="0" stop-color="#fff7fb" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#fff7fb" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <rect width="1200" height="900" fill="url(#glow)"/>
+  <circle cx="600" cy="405" r="190" fill="none" stroke="#fff7fb" stroke-opacity=".35" stroke-width="2"/>
+  <circle cx="600" cy="405" r="145" fill="none" stroke="#fff7fb" stroke-opacity=".2" stroke-width="1"/>
+  <path d="M600 470c-105-64-150-119-150-177 0-53 39-88 88-88 28 0 51 13 62 38 11-25 34-38 62-38 49 0 88 35 88 88 0 58-45 113-150 177z" fill="#fff7fb" fill-opacity=".9"/>
+  <text x="600" y="690" text-anchor="middle" fill="#fff7fb" font-family="Georgia, serif" font-size="44">and still us.</text>
+  <text x="600" y="735" text-anchor="middle" fill="#fff7fb" fill-opacity=".7" font-family="Arial, sans-serif" font-size="16" letter-spacing="4">LANDING IMAGE</text>
+</svg>
