@@ -128,6 +128,27 @@ export default function Admin() {
     setMessage("Image uploaded. Save the memory to publish it.")
   }
 
+  async function uploadLandingImage(file: File) {
+    if (!supabase) return
+    setSaving(true)
+    setMessage("")
+    const safeName = file.name.toLowerCase().replace(/[^a-z0-9.-]+/g, "-")
+    const path = `landing/${Date.now()}-${safeName}`
+    const upload = await supabase.storage.from("sucree-media").upload(path, file, {
+      cacheControl: "31536000",
+      upsert: false,
+    })
+    if (upload.error) {
+      setSaving(false)
+      setMessage(upload.error.message)
+      return
+    }
+    const { data } = supabase.storage.from("sucree-media").getPublicUrl(path)
+    setContent((current) => ({ ...current, landing_image_url: data.publicUrl }))
+    setSaving(false)
+    setMessage("Landing image uploaded. Save it below to publish.")
+  }
+
   async function deleteMemory(id: string) {
     if (!supabase || !confirm("Delete this memory permanently?")) return
     const { error } = await supabase.from("memories").delete().eq("id", id)
@@ -190,7 +211,7 @@ export default function Admin() {
       }
     }
     setSaving(false)
-    setMessage("Ending and Easter egg saved.")
+    setMessage("Site content saved.")
   }
 
   const filtered = useMemo(
@@ -265,6 +286,15 @@ export default function Admin() {
           )}
         </section>
       </div>
+
+      <section className="admin-content-panel">
+        <div><span className="admin-kicker">landing scene</span><h2>Landing image</h2><p>This image is separate from Memory 01.</p></div>
+        <div className="admin-image-box">
+          <div>{content.landing_image_url ? <img src={content.landing_image_url} alt="" /> : <span>Using the default landing placeholder</span>}</div>
+          <label className="admin-upload">Replace landing image<input type="file" accept="image/*" onChange={(e) => e.target.files?.[0] && uploadLandingImage(e.target.files[0])} /></label>
+        </div>
+        <button className="admin-primary" onClick={saveSiteContent} disabled={saving}>{saving ? "Saving..." : "Save landing image"}</button>
+      </section>
 
       <section className="admin-content-panel">
         <div><span className="admin-kicker">final scene</span><h2>Ending & hidden Easter egg</h2><p>Edit the words she sees after the last memory.</p></div>
