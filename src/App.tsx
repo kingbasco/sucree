@@ -404,17 +404,6 @@ function App() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <header className="topbar">
-              <span className="wordmark">sucree</span>
-              <span className="chapter-label">how it started · {memory.number} / {activeMemories.length}</span>
-            </header>
-
-            <div className="story-progress" aria-hidden="true">
-              {activeMemories.map((item, index) => (
-                <span key={item.number} className={index === storyIndex ? "active" : ""} />
-              ))}
-            </div>
-
             <div className="story-content">
               <div className="story-copy">
                 <AnimatePresence mode="wait">
@@ -447,19 +436,7 @@ function App() {
                   </motion.div>
                 </AnimatePresence>
 
-                <div className="story-controls">
-                  <button type="button" onClick={() => changeMemory(-1)} disabled={storyIndex === 0}>
-                    ←
-                  </button>
-                  <span>swipe / tap</span>
-                  <button
-                    type="button"
-                    onClick={() => changeMemory(1)}
-                    aria-label={storyIndex === activeMemories.length - 1 ? "Finish the story" : "Next memory"}
-                  >
-                    →
-                  </button>
-                </div>
+
               </div>
             </div>
 
@@ -478,9 +455,6 @@ function App() {
               aria-label="Swipe between memories"
             />
 
-            <button className="story-back" type="button" onClick={() => setState("opening")}>
-              restart
-            </button>
           </motion.section>
         )}
 
