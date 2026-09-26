@@ -716,19 +716,6 @@ h2 em {
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
-  position: absolute;
-  bottom: 30px;
-  left: clamp(20px, 4vw, 64px);
-  border: 0;
-  color: var(--mist);
-  background: transparent;
-  cursor: pointer;
-  font-family: "DM Mono", monospace;
-  font-size: 0.58rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
 .music-control {
   position: fixed;
   right: clamp(20px, 4vw, 64px);
