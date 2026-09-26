@@ -625,6 +625,18 @@ h2 em {
   box-shadow: 0 34px 90px rgba(0, 0, 0, 0.3);
 }
 
+.story-photo img,
+.story-photo video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.story-photo video {
+  background: #1e0812;
+}
+
 .story-photo::after {
   position: absolute;
   inset: 0;
