@@ -307,7 +307,7 @@ function App() {
       audio.removeEventListener("play", sync)
       audio.removeEventListener("pause", sync)
     }
-  }, [])
+  }, [endingContent.background_music_url])
 
   const toggleMusic = async () => {
     const audio = audioRef.current
