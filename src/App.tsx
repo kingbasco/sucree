@@ -504,6 +504,7 @@ function App() {
             </div>
 
             <div className="story-swipe-zone" aria-hidden="true" />
+          </motion.section>
         )}
 
         {state === "ending" && (
