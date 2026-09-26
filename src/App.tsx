@@ -258,6 +258,7 @@ function App() {
           body: item.body,
           note: item.note,
           image: item.image_url || "/media/dummy-cat.svg",
+          mediaType: item.media_type === "video" ? "video" : "image",
         })))
       }
       if (!contentResult.error) {
@@ -432,7 +433,11 @@ function App() {
                     exit={{ opacity: 0, x: storyDirection * -36, scale: 1.03, rotate: storyDirection * -2, filter: "blur(6px)" }}
                     transition={{ duration: 0.72, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <img src={memory.image} alt="" />
+                    {memory.mediaType === "video" ? (
+                      <video src={memory.image} autoPlay muted loop playsInline preload="metadata" aria-label="" />
+                    ) : (
+                      <img src={memory.image} alt="" />
+                    )}
                   </motion.div>
                 </AnimatePresence>
 
