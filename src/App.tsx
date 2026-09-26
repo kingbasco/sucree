@@ -408,25 +408,23 @@ function App() {
             </header>
 
             <div className="opening-content">
-              <motion.div
-                className="landing-background"
-                initial={{ opacity: 0, scale: 1.04 }}
-                animate={{ opacity: siteContentLoaded && landingImageReady ? 1 : 0.82, scale: 1 }}
-                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-                aria-hidden="true"
-              >
-                <img
-                  src={endingContent.landing_image_url || "/media/landing.svg"}
-                  alt=""
-                  decoding="async"
-                  fetchPriority="high"
-                  onLoad={() => setLandingImageReady(true)}
-                />
-                <div className="landing-background-overlay">
-                  <span>one year</span>
-                  <strong>and still us.</strong>
-                </div>
-              </motion.div>
+              {siteContentLoaded && endingContent.landing_image_url?.trim() && (
+                <motion.div
+                  className="landing-background"
+                  initial={{ opacity: 0, scale: 1.02 }}
+                  animate={{ opacity: landingImageReady ? 1 : 0, scale: 1 }}
+                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                  aria-hidden="true"
+                >
+                  <img
+                    src={endingContent.landing_image_url}
+                    alt=""
+                    decoding="async"
+                    fetchPriority="high"
+                    onLoad={() => setLandingImageReady(true)}
+                  />
+                </motion.div>
+              )}
 
               <div className="question-wrap">
                 <p className="eyebrow">A little question before we begin</p>
