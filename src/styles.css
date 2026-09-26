@@ -515,7 +515,7 @@ h2 em {
 }
 
 .landing-background {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 0;
   overflow: hidden;
@@ -532,7 +532,6 @@ h2 em {
     linear-gradient(90deg, rgba(244, 34, 114, 0.28), transparent 55%);
 }
 
-.landing-background img,
 .landing-background img {
   display: block;
   width: 100%;
